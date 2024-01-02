@@ -21,3 +21,4 @@ Arguments:
 
 # Example output
 
+![Example output](/assets/example.png?raw=true "Example image")
