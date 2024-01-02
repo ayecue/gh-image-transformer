@@ -23,7 +23,7 @@ function rgbToHex(r: number, g: number, b: number) {
   return `#${rbgValueToHexValue(r)}${rbgValueToHexValue(g)}${rbgValueToHexValue(b)}`;
 }
 
-async function generateMatrix(image: Jimp, width: number = 128, height: number = Jimp.AUTO): Promise<string[][]> {
+async function generateMatrix(image: Jimp, width: number = 64, height: number = Jimp.AUTO): Promise<string[][]> {
   const resizedImage = await image.resize(width, height);
   const chunks = (new Array(resizedImage.bitmap.height)).fill(undefined).map(() => new Array(resizedImage.bitmap.width));
 

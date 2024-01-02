@@ -8,7 +8,7 @@ if (t === '--help' || t === '-h') {
   process.exit(0);
 }
 
-const sanatizedWidth = parseMeasurement(w, 128);
+const sanatizedWidth = parseMeasurement(w, 64);
 const sanatizedHeight = parseMeasurement(h);
 
 transform(t, sanatizedWidth, sanatizedHeight);
