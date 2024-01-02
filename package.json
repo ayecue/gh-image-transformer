@@ -1,12 +1,12 @@
 {
     "name": "gh-image-transformer",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Generate image to TextMesh Pro Rich-Text",
     "homepage": "https://github.com/ayecue/gh-image-transformer",
     "main": "dist/index",
     "typings": "dist/index",
     "bin": {
-        "gh-image-transformer": "./dist/index.js"
+        "gh-image-transformer": "./bin/index.js"
     },
     "repository": {
         "type": "git",
