@@ -38,12 +38,12 @@ async function generateMatrix(image: Jimp, width: number = 64, height: number = 
   return chunks;
 }
 
-function generateSprites(matrix: string[][]): string {
+function generateSprites(matrix: string[][], scale: number): string {
   let rowIndex = 0;
-  let output = '<scale=1.77><size=5><mspace=5.75>';
+  let output = `<scale=${scale}><size=${scale}><mspace=${scale * 1.1}>`;
 
   for (let i = matrix.length - 1; i >= 0; i--) {
-    let line = `<pos=0><voffset=${5 * rowIndex}>`;
+    let line = `<pos=0><voffset=${scale * rowIndex}>`;
 
     for (const column of matrix[i]) {
       line += `<sprite=0 color=${column}>`
@@ -56,11 +56,25 @@ function generateSprites(matrix: string[][]): string {
   return output;
 }
 
-export async function transform(target: string, width: number, height: number) {
-  const image = await Jimp.read(target);
+export interface TransformOptions {
+  filepath: string;
+  width: number;
+  height: number;
+  outputDirectory?: string;
+  scale?: number;
+}
+
+export async function transform({
+  filepath,
+  width,
+  height,
+  outputDirectory = process.cwd(),
+  scale = 2
+}: TransformOptions) {
+  const image = await Jimp.read(filepath);
   const matrix = await generateMatrix(image, width, height);
-  const output = `print("${generateSprites(matrix)}")`;
-  const outputPath = path.resolve(process.cwd(), 'image.src');
+  const output = `print("${generateSprites(matrix, scale)}")`;
+  const outputPath = path.resolve(outputDirectory, 'image.src');
 
   writeFileSync(outputPath, output);
   console.log(`Created file at ${outputPath}!`);

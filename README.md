@@ -11,12 +11,20 @@ npm install -g gh-image-transformer
 # Usage
 
 ```
-Example: gh-image-transformer <image> [width] [height]
+Usage: gh-image-transformer [options] <filepath> [width] [height]
+
+Transform images to TextMesh Rich-Tags output for Grey Hack.
 
 Arguments:
-	image		Image to transform
-	width		Output image width
-	height		Output image height
+  filepath                                  Image to transform
+  width                                     Output width of image
+  height                                    Output height of image
+
+Options:
+  -V, --version                             output the version number
+  -o, --output-directory <outputDirectory>  Output directory
+  -s, --scale <number>                      Scale of output
+  -h, --help                                display help for command
 ```
 
 # Example output
