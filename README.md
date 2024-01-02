@@ -16,7 +16,7 @@ Example: gh-image-transformer <image> [width] [height]
 Arguments:
 	image		Image to transform
 	width		Output image width
-	height	Output image height
+	height		Output image height
 ```
 
 # Example output
