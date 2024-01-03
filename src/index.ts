@@ -36,7 +36,7 @@ async function generateMatrix(image: Jimp, width: number = 64, height: number = 
     const green = this.bitmap.data[idx + 1];
     const blue = this.bitmap.data[idx + 2];
     const alpha = this.bitmap.data[idx + 3];
-    const hex = withoutAlpha ? rgbToHex(red, green, blue) : rgbToHexWithAlpha(red, green, blue, alpha);
+    const hex = withoutAlpha || alpha === 255 ? rgbToHex(red, green, blue) : rgbToHexWithAlpha(red, green, blue, alpha);
     chunks[y][x] = hex;
   });
 
