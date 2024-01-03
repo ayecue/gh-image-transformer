@@ -23,7 +23,11 @@ function rgbToHex(r: number, g: number, b: number) {
   return `#${rbgValueToHexValue(r)}${rbgValueToHexValue(g)}${rbgValueToHexValue(b)}`;
 }
 
-async function generateMatrix(image: Jimp, width: number = 64, height: number = Jimp.AUTO): Promise<string[][]> {
+function rgbToHexWithAlpha(r: number, g: number, b: number, a: number) {
+  return `${rgbToHex(r, g, b)}${rbgValueToHexValue(a)}`;
+}
+
+async function generateMatrix(image: Jimp, width: number = 64, height: number = Jimp.AUTO, withoutAlpha: boolean): Promise<string[][]> {
   const resizedImage = await image.resize(width, height);
   const chunks = (new Array(resizedImage.bitmap.height)).fill(undefined).map(() => new Array(resizedImage.bitmap.width));
 
@@ -31,7 +35,8 @@ async function generateMatrix(image: Jimp, width: number = 64, height: number = 
     const red = this.bitmap.data[idx + 0];
     const green = this.bitmap.data[idx + 1];
     const blue = this.bitmap.data[idx + 2];
-    const hex = rgbToHex(red, green, blue);
+    const alpha = this.bitmap.data[idx + 3];
+    const hex = withoutAlpha ? rgbToHex(red, green, blue) : rgbToHexWithAlpha(red, green, blue, alpha);
     chunks[y][x] = hex;
   });
 
@@ -62,6 +67,7 @@ export interface TransformOptions {
   height: number;
   outputDirectory?: string;
   scale?: number;
+  withoutAlpha?: boolean;
 }
 
 export async function transform({
@@ -69,10 +75,11 @@ export async function transform({
   width,
   height,
   outputDirectory = process.cwd(),
-  scale = 2
+  scale = 2,
+  withoutAlpha = false
 }: TransformOptions) {
   const image = await Jimp.read(filepath);
-  const matrix = await generateMatrix(image, width, height);
+  const matrix = await generateMatrix(image, width, height, withoutAlpha);
   const output = `print("${generateSprites(matrix, scale)}")`;
   const outputPath = path.resolve(outputDirectory, 'image.src');
 

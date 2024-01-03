@@ -16,14 +16,15 @@ Usage: gh-image-transformer [options] <filepath> [width] [height]
 Transform images to TextMesh Rich-Tags output for Grey Hack.
 
 Arguments:
-  filepath                                  Image to transform
-  width                                     Output width of image
-  height                                    Output height of image
+  filepath                                  image to transform
+  width                                     output width of image
+  height                                    output height of image
 
 Options:
   -V, --version                             output the version number
-  -o, --output-directory <outputDirectory>  Output directory
-  -s, --scale <number>                      Scale of output
+  -o, --output-directory <outputDirectory>  output directory
+  -s, --scale <number>                      scale of output
+  -wa, --without-alpha                      ignore alpha channel
   -h, --help                                display help for command
 ```
 

@@ -12,9 +12,9 @@ program
   .arguments('[width]')
   .arguments('[height]')
   .description('Transform images to TextMesh Rich-Tags output for Grey Hack.', {
-    filepath: 'Image to transform',
-    width: 'Output width of image',
-    height: 'Output height of image'
+    filepath: 'image to transform',
+    width: 'output width of image',
+    height: 'output height of image'
   })
   .action(function (filepath, width, height) {
     console.log(filepath);
@@ -22,8 +22,9 @@ program
     options.width = parseMeasurement(width, 64);
     options.height = parseMeasurement(height);
   })
-  .option('-o, --output-directory <outputDirectory>', 'Output directory')
-  .option('-s, --scale <number>', 'Scale of output');
+  .option('-o, --output-directory <outputDirectory>', 'output directory')
+  .option('-s, --scale <number>', 'scale of output')
+  .option('-wa, --without-alpha', 'ignore alpha channel');
 
 program.parse(process.argv);
 
