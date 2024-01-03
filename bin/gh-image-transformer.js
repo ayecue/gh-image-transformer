@@ -17,7 +17,6 @@ program
     height: 'output height of image'
   })
   .action(function (filepath, width, height) {
-    console.log(filepath);
     options.filepath = filepath;
     options.width = parseMeasurement(width, 64);
     options.height = parseMeasurement(height);

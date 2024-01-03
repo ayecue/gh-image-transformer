@@ -83,6 +83,10 @@ export async function transform({
   const output = `print("${generateSprites(matrix, scale)}")`;
   const outputPath = path.resolve(outputDirectory, 'image.src');
 
+  if (output.length > 160000) {
+    console.warn('Output file contains more than 160000 chars.');
+  }
+
   writeFileSync(outputPath, output);
   console.log(`Created file at ${outputPath}!`);
 }
