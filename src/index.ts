@@ -62,13 +62,6 @@ async function generateMatrix(image: Jimp, width: number = 64, height: number = 
   return chunks;
 }
 
-function generateCharset(size: number = 256, offset: number = 32) {
-  let charset = '';
-  const max = offset + size;
-  for (let i = offset; i < max; i++) charset += String.fromCharCode(i);
-  return charset;
-}
-
 function generateSprites(matrix: string[][], scale: number): string {
   let rowIndex = 0;
   let output = `"<scale=${scale}><size=${scale}><mspace=${scale * 1.1}>"`;
