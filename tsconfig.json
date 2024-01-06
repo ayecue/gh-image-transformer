@@ -10,7 +10,8 @@
       "resolveJsonModule": true,
       "esModuleInterop": true,
       "declaration": true,
-      "downlevelIteration": true
+      "downlevelIteration": true,
+      "skipLibCheck": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]
