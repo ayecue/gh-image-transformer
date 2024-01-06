@@ -14,7 +14,7 @@ program
   .arguments('<filepath>')
   .arguments('[width]')
   .arguments('[height]')
-  .description('Transform images to TextMesh Rich-Tags output for Grey Hack.', {
+  .description('Transform GIFs to TextMesh Rich-Tags output animation frames for Grey Hack.', {
     filepath: 'image to transform',
     width: 'output width of image',
     height: 'output height of image'

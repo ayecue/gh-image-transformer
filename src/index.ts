@@ -61,13 +61,14 @@ export async function transformAnimation({
     })
   );
 
-  const lines = [coreLibraryFactory(), 'frames=[]'];
+  const lines = [coreLibraryFactory(), `framesTotal=${animationFrames.length}`, 'frames=[]', 'print("Loading "+framesTotal+" frames...")'];
   const frameFiles = [];
   const frameOutputMap: Record<string, string> = {};
   let frameFileBuffer = '';
+  let counter = 0;
 
   for (const animationFrame of animationFrames) {
-    const frame = `;push(frames,${animationFrame})`;
+    const frame = `;push(frames,${animationFrame});print("${++counter}/"+framesTotal)`;
     const next = frameFileBuffer + frame;
 
     if (next.length > 160000) {
