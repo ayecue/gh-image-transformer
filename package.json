@@ -6,6 +6,7 @@
     "main": "dist/index",
     "typings": "dist/index",
     "bin": {
+        "gh-animation-transformer": "./bin/gh-animation-transformer.js",
         "gh-image-transformer": "./bin/gh-image-transformer.js"
     },
     "repository": {
