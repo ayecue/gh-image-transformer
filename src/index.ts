@@ -61,7 +61,12 @@ export async function transformAnimation({
     })
   );
 
-  const lines = [coreLibraryFactory(), `framesTotal=${animationFrames.length}`, 'frames=[]', 'print("Loading "+framesTotal+" frames...")'];
+  const lines = [
+    coreLibraryFactory(),
+    `framesTotal=${animationFrames.length}`,
+    'frames=[]',
+    'print("Loading "+framesTotal+" frames...")'
+  ];
   const frameFiles = [];
   const frameOutputMap: Record<string, string> = {};
   let frameFileBuffer = '';
