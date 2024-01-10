@@ -44,7 +44,7 @@ function generateSprites(matrix: string[][], scale: number): string {
   let rowIndex = 0;
   let output = `"<scale=${scale}><size=${scale}><mspace=${scale * 1.1}>"`;
 
-  for (let i = matrix.length - 1; i >= 0; i--) {
+  for (let i = matrix.length - 1; i >= 1; i--) {
     output += `+¶(${scale * rowIndex},"${matrix[i].join('')}")`;
     rowIndex++;
   }

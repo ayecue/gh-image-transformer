@@ -1,6 +1,6 @@
 {
     "name": "gh-image-transformer",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Generate image to TextMesh Pro Rich-Text",
     "homepage": "https://github.com/ayecue/gh-image-transformer",
     "main": "dist/index",
@@ -76,6 +76,7 @@
     },
     "dependencies": {
         "commander": "^11.1.0",
-        "imagescript": "^1.2.18"
+        "imagescript": "^1.2.18",
+        "jimp": "^0.22.10"
     }
 }

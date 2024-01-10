@@ -1,7 +1,11 @@
 import { readFileSync } from 'fs';
-import { decode, GIF, Image } from 'imagescript';
+import { decode, Image } from 'imagescript';
+import Jimp from 'jimp';
 
-import { StaticImageContainer } from './image-container';
+import {
+  AnimatedImageContainer,
+  StaticImageContainer
+} from './image-container';
 import { process } from './process';
 import { coreLibraryFactory } from './utils';
 
@@ -14,17 +18,7 @@ export interface TransformOptions {
 }
 
 export async function transform({ filepath, ...options }: TransformOptions) {
-  const image = await decode(readFileSync(filepath));
-
-  if (image instanceof GIF) {
-    return [
-      coreLibraryFactory(),
-      `print(${await process({
-        image: new StaticImageContainer(image[0]),
-        ...options
-      })})`
-    ].join(';');
-  }
+  const image = await Jimp.read(readFileSync(filepath));
 
   return [
     coreLibraryFactory(),
@@ -53,7 +47,7 @@ export async function transformAnimation({
   const animationFrames: string[] = await Promise.all(
     Array.from(image).map(async (frame) => {
       const out = await process({
-        image: new StaticImageContainer(frame),
+        image: new AnimatedImageContainer(frame),
         ...options
       });
 
@@ -61,7 +55,12 @@ export async function transformAnimation({
     })
   );
 
-  const lines = [coreLibraryFactory(), `framesTotal=${animationFrames.length}`, 'frames=[]', 'print("Loading "+framesTotal+" frames...")'];
+  const lines = [
+    coreLibraryFactory(),
+    `framesTotal=${animationFrames.length}`,
+    'frames=[]',
+    'print("Loading "+framesTotal+" frames...")'
+  ];
   const frameFiles = [];
   const frameOutputMap: Record<string, string> = {};
   let frameFileBuffer = '';
