@@ -76,6 +76,7 @@
     },
     "dependencies": {
         "commander": "^11.1.0",
-        "imagescript": "^1.2.18"
+        "imagescript": "^1.2.18",
+        "jimp": "^0.22.10"
     }
 }
