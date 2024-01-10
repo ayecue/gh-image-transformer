@@ -47,7 +47,9 @@ export async function transformAnimation({
   const animationFrames: string[] = await Promise.all(
     Array.from(image).map(async (frame) => {
       const out = await process({
-        image: new AnimatedImageContainer(frame),
+        image: await StaticImageContainer.readFromImageScript(
+          new AnimatedImageContainer(frame)
+        ),
         ...options
       });
 

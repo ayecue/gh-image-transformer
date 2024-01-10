@@ -55,6 +55,15 @@ export class ImageScriptContainer extends ImageContainer {
 export class ImageJimpContainer extends ImageContainer {
   public ref: Jimp;
 
+  static async readFromImageScript(image: ImageScriptContainer) {
+    const jimpImage = new Jimp({
+      data: image.bitmap,
+      width: image.width,
+      height: image.height
+    });
+    return new ImageJimpContainer(jimpImage);
+  }
+
   constructor(obj: Jimp) {
     super();
     this.ref = obj;
