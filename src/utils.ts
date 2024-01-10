@@ -40,7 +40,7 @@ export function coreLibraryFactory() {
         d=code(k)-100
         s=""
         for x in range(2)
-          s=b[d%16]+s
+          s=s+b[d%16]
           d=floor(d/16)
         end for
         o=o+s
@@ -58,9 +58,9 @@ export function coreLibraryFactory() {
       r=j[0]+j[1]
       g=j[2]+j[3]
       b=j[4]+j[5]
-      a=j[6]+j[7]
+      a=j[7]+j[8]
       outer.i=i+2
-      if a=="FF" then
+      if upper(a)=="FF" then
         return "#"+r+g+b
       end if
       return "#"+r+g+b+a

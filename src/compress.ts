@@ -4,7 +4,7 @@ export const OptimizedCodes = {
   Invisible: String.fromCharCode(30)
 } as const;
 
-export const DEFAULT_ALPHA = 'FF0';
+export const DEFAULT_ALPHA = '0FF';
 
 export function compress(hex: string): string {
   hex = hex.slice(1);
@@ -18,13 +18,14 @@ export function compress(hex: string): string {
   } else {
     if (hex.length < 8)
       throw new Error('Hex value with alpha cannot be less than 8 characters');
-    segments.push(`${hex.slice(6, 8)}0`);
+    segments.push(`0${hex.slice(6, 8)}`);
   }
 
   let output = '';
 
   for (const segment of segments) {
-    output += String.fromCharCode(100 + parseInt(segment, 16));
+    const code = 100 + parseInt(segment, 16);
+    output += String.fromCharCode(code);
   }
 
   return output;
