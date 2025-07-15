@@ -1,58 +1,13 @@
-import { compress, OptimizedCodes } from './compress';
 import { ImageContainer } from './image-container';
-import { rgbToHex, rgbToHexWithAlpha } from './utils';
+import { MatrixGenerator } from './process/matrix-generator';
+import { SpriteGenerator } from './process/sprite-generator';
 
-export const ImageAutoSize = -1;
-
-async function generateMatrix(
-  image: ImageContainer,
-  width: number = 64,
-  height: number = ImageAutoSize,
-  withoutAlpha: boolean
-): Promise<string[][]> {
-  const resizedImage = await image.resize(width, height);
-  const chunks = new Array(resizedImage.height)
-    .fill(undefined)
-    .map(() => new Array(resizedImage.width));
-
-  resizedImage.scan(function (x, y, rgba) {
-    const red = rgba[0];
-    const green = rgba[1];
-    const blue = rgba[2];
-    const alpha = rgba[3];
-    const hasNoAlpha = withoutAlpha || alpha === 255;
-    let hex;
-
-    if (hasNoAlpha) {
-      hex = rgbToHex(red, green, blue);
-      if (hex === '#000000') hex = OptimizedCodes.Black;
-      else if (hex === '#FFFFFF') hex = OptimizedCodes.White;
-      else hex = compress(hex);
-    } else {
-      hex = rgbToHexWithAlpha(red, green, blue, alpha);
-      if (alpha === 0) hex = OptimizedCodes.Invisible;
-      else hex = compress(hex);
-    }
-
-    chunks[y][x] = hex;
-  });
-
-  return chunks;
-}
-
-function generateSprites(matrix: string[][], scale: number): string {
-  let rowIndex = 0;
-  let output = `"<scale=${scale}><size=${scale}><mspace=${scale * 1.1}>"`;
-
-  for (let i = matrix.length - 1; i >= 1; i--) {
-    output += `+¶(${scale * rowIndex},"${matrix[i].join('')}")`;
-    rowIndex++;
-  }
-
-  return output;
-}
+const MAX_PRINT_CHARACTERS = 2048;
+const MAX_FILE_CHARACTERS = 160000;
 
 export interface ProcessOptions {
+  filepath: string;
+  frameIdx?: number;
   image: ImageContainer;
   width: number;
   height: number;
@@ -61,17 +16,41 @@ export interface ProcessOptions {
 }
 
 export async function process({
+  filepath,
+  frameIdx,
   image,
   width,
   height,
   scale = 2,
   withoutAlpha = false
 }: ProcessOptions) {
-  const matrix = await generateMatrix(image, width, height, withoutAlpha);
-  const output = generateSprites(matrix, scale);
+  const matrixGenerator = new MatrixGenerator({
+    image,
+    width,
+    height,
+    withoutAlpha
+  });
+  const { matrix, uncompressedMatrix } = await matrixGenerator.generate();
+  const spriteGenerator = new SpriteGenerator(scale);
+  const { output, characters } = spriteGenerator.generate({
+    matrix,
+    uncompressedMatrix
+  });
 
-  if (output.length > 160000) {
-    console.warn('Output file contains more than 160000 chars.');
+  if (characters > MAX_PRINT_CHARACTERS) {
+    if (frameIdx !== undefined) {
+      console.warn(`Grey Hack only allows ${MAX_PRINT_CHARACTERS} characters per print output. Frame ${frameIdx} of the image ${filepath} exceeds that limit with ${characters} characters. Please decrease the size otherwise your image won't be shown correctly.`);
+    } else {
+      console.warn(`Grey Hack only allows ${MAX_PRINT_CHARACTERS} characters per print output. The image ${filepath} exceeds that limit with ${characters} characters. Please decrease the size otherwise your image won't be shown correctly.`);
+    }
+  }
+
+  if (output.length > MAX_FILE_CHARACTERS) {
+    if (frameIdx !== undefined) {
+      throw new Error(`Grey Hack only allows ${MAX_FILE_CHARACTERS} characters per text file. Frame ${frameIdx} of the image ${filepath} exceeds that limit. Please decrease the image size.`);
+    }
+
+    throw new Error(`Grey Hack only allows ${MAX_FILE_CHARACTERS} characters per text file. The image ${filepath} exceeds that limit. Please decrease the image size.`);
   }
 
   return output;

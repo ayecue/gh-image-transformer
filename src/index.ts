@@ -23,6 +23,7 @@ export async function transform({ filepath, ...options }: TransformOptions) {
   return [
     coreLibraryFactory(),
     `print(${await process({
+      filepath,
       image: new StaticImageContainer(image),
       ...options
     })})`
@@ -45,8 +46,10 @@ export async function transformAnimation({
   }
 
   const animationFrames: string[] = await Promise.all(
-    Array.from(image).map(async (frame) => {
+    Array.from(image).map(async (frame, index) => {
       const out = await process({
+        filepath,
+        frameIdx: index,
         image: await StaticImageContainer.readFromImageScript(
           new AnimatedImageContainer(frame)
         ),
