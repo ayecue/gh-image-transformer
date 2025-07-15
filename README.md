@@ -62,7 +62,13 @@ gh-image-transformer path/to/image.png
 
 Optionally you can also select the width and height. By default, it will resize the image by a width of `64px`. If you want to resize the image by height just place a `-1` at the spot of the `width`.
 
-~~Keep in mind that the images should be kept below 100px since Grey Hack has a limit of `160000` characters for each print line.~~ **Recently Grey Hack changed to character limit of tags per print line to `2048`. Anything above that causes the image to be displayed incorrectly. So unfortunately for now images have to be very small.**
+~~Keep in mind that the images should be kept below 100px since Grey Hack has a limit of `160000` characters for each print line.~~ :warning: **Recently Grey Hack changed to character limit of tags per print line to `2048`. Anything above that causes the image to be displayed incorrectly. So unfortunately for now images have to be very small.**
+
+Associated changelog for this:
+> \- Fixed bug that could cause a crash and an unexpected game shutdown when using certain tags in scripting within an infinite loop.
+
+Introduced via version **v0.9.5683** (public) and **v0.9.5905E** (nightly).
+
 
 Via the additional options, you can also change the scale of each pixel by default that value is `2`. It is not recommended to go lower since that will cause vertical space between lines.
 
