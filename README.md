@@ -51,6 +51,17 @@ Options:
   -h, --help                                display help for command
 ```
 
+# Important info
+
+:warning: **Recently Grey Hack changed to character limit of tags per print line to `2048`. Anything above that causes the image to be displayed incorrectly. So unfortunately for now images have to be very small.**
+
+Associated changelog for this:
+> \- Fixed bug that could cause a crash and an unexpected game shutdown when using certain tags in scripting within an infinite loop.
+
+Introduced via version **v0.9.5683** (public) and **v0.9.5905E** (nightly).
+
+### :sparkles: I've created a BepInEx plugin which circumvents this issue: [Plugin to fix current implementation](https://github.com/ayecue/greyhack-customizable-output)
+
 # How to
 
 ## Static Image
@@ -62,13 +73,7 @@ gh-image-transformer path/to/image.png
 
 Optionally you can also select the width and height. By default, it will resize the image by a width of `64px`. If you want to resize the image by height just place a `-1` at the spot of the `width`.
 
-~~Keep in mind that the images should be kept below 100px since Grey Hack has a limit of `160000` characters for each print line.~~ :warning: **Recently Grey Hack changed to character limit of tags per print line to `2048`. Anything above that causes the image to be displayed incorrectly. So unfortunately for now images have to be very small.**
-
-Associated changelog for this:
-> \- Fixed bug that could cause a crash and an unexpected game shutdown when using certain tags in scripting within an infinite loop.
-
-Introduced via version **v0.9.5683** (public) and **v0.9.5905E** (nightly).
-
+~~Keep in mind that the images should be kept below 100px since Grey Hack has a limit of `160000` characters for each print line.~~ Please look [here](#important-info).
 
 Via the additional options, you can also change the scale of each pixel by default that value is `2`. It is not recommended to go lower since that will cause vertical space between lines.
 
@@ -86,6 +91,8 @@ The options of the animation transformer are the same as the ones from the norma
 In case you are using greybel-js you just need to execute `greybel path/to/image.src`. It is recommended to use the `--create-ingame` flag to avoid copy-pasting all the files.
 
 If you are using greybel-vs you just need to right click on the `image.src` and select `build`. To make it more convenient please make sure to activate the `create-ingame` option.
+
+:warning: 
 
 # Example output
 

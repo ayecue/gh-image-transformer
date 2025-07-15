@@ -6,6 +6,7 @@ const { parseMeasurement } = require('../dist/utils.js');
 const { transform } = require('../dist/index.js');
 const { writeFileSync } = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 
 let options = {};
 
@@ -38,7 +39,7 @@ async function main() {
   const outputPath = path.resolve(outputDirectory, 'image.src');
 
   writeFileSync(outputPath, output);
-  console.log(`Created file at ${outputPath}!`);
+  console.log(chalk.green(`Created file at ${outputPath}!`));
 }
 
 main();

@@ -6,6 +6,7 @@ const { parseMeasurement } = require('../dist/utils.js');
 const { transformAnimation } = require('../dist/index.js');
 const { writeFileSync } = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 
 let options = {};
 
@@ -40,13 +41,13 @@ async function main() {
   for (const [filename, content] of Object.entries(output.frames)) {
     const outputPath = path.resolve(outputDirectory, filename);
     writeFileSync(outputPath, content);
-    console.log(`Created file at ${outputPath}!`);
+    console.log(chalk.green(`Created file at ${outputPath}!`));
   }
 
   const outputPath = path.resolve(outputDirectory, 'image.src');
 
   writeFileSync(outputPath, output.main);
-  console.log(`Created file at ${outputPath}!`);
+  console.log(chalk.green(`Created file at ${outputPath}!`));
 }
 
 main();
