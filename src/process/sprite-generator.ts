@@ -1,5 +1,6 @@
-import { OptimizedCodes } from "../compress";
-import { MatrixGeneratorResult } from "./matrix-generator";
+import { OptimizedCodes } from '../compress';
+import { roundNumber } from '../utils';
+import { MatrixGeneratorResult } from './matrix-generator';
 
 export interface SpriteGeneratorResult {
   output: string;
@@ -7,9 +8,12 @@ export interface SpriteGeneratorResult {
 }
 
 export class SpriteGenerator {
+  private static DEFAULT_PIXEL_SIZE = 10;
+  private static SPRITE_WIDTH = 6;
+
   private scale: number;
 
-  constructor(scale: number = 2) {
+  constructor(scale: number = 1) {
     this.scale = scale;
   }
 
@@ -29,8 +33,8 @@ export class SpriteGenerator {
         case OptimizedCodes.Invisible:
           characters += 26; // "<sprite=0 color=#00000000>";
           break;
-        default:
-          characters += 17 + charVal.length; // "<sprite=0 color=>";
+        default: // "<sprite=0 color=>";
+          characters += 17 + charVal.length;
           break;
       }
     }
@@ -38,18 +42,35 @@ export class SpriteGenerator {
     return characters;
   }
 
-  generate({ matrix, uncompressedMatrix }: MatrixGeneratorResult): SpriteGeneratorResult {
-    let rowIndex = 0;
-    let output = `"<scale=${this.scale}><size=${this.scale}><mspace=${this.scale * 1.1}>"`;
+  getSpriteWidth(): number {
+    return roundNumber(SpriteGenerator.SPRITE_WIDTH * this.scale, 2);
+  }
+
+  getPixelSize(): number {
+    return roundNumber(SpriteGenerator.DEFAULT_PIXEL_SIZE * this.scale, 2);
+  }
+
+  generate({
+    matrix,
+    uncompressedMatrix
+  }: MatrixGeneratorResult): SpriteGeneratorResult {
+    const width = this.getSpriteWidth();
+    let output = `"<size=${this.getPixelSize()}><mspace=${width}>"`;
     let characters = output.length;
+    let vposition = 0;
 
     for (let i = matrix.length - 1; i >= 1; i--) {
-      const vposition = this.scale * rowIndex;
       const content = matrix[i].join('');
       output += `+¶(${vposition},"${content}")`;
-      characters += this.calculateRowCharacters(vposition, uncompressedMatrix[i]);
-      rowIndex++;
+      characters += this.calculateRowCharacters(
+        vposition,
+        uncompressedMatrix[i]
+      );
+      vposition = roundNumber(vposition + width, 2);
     }
+
+    output += `+"</mspace></size>"`;
+    characters += 16; // "</mspace></size>"
 
     return {
       output,

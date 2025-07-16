@@ -23,7 +23,7 @@ export async function process({
   image,
   width,
   height,
-  scale = 2,
+  scale,
   withoutAlpha = false
 }: ProcessOptions) {
   const matrixGenerator = new MatrixGenerator({
@@ -32,12 +32,9 @@ export async function process({
     height,
     withoutAlpha
   });
-  const { matrix, uncompressedMatrix } = await matrixGenerator.generate();
-  const spriteGenerator = new SpriteGenerator(scale);
-  const { output, characters } = spriteGenerator.generate({
-    matrix,
-    uncompressedMatrix
-  });
+  const matrixResult = await matrixGenerator.generate();
+  const spriteGenerator = new SpriteGenerator(scale ?? matrixResult.resizeScale);
+  const { output, characters } = spriteGenerator.generate(matrixResult);
 
   if (frameIdx !== undefined) {
     console.log(chalk.cyan(`Frame ${frameIdx} of the image ${filepath} got processed! The calculated output is going to be ${characters} characters.`));

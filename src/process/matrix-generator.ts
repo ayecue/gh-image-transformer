@@ -1,12 +1,13 @@
-import { compress, OptimizedCodes } from "../compress";
-import { ImageContainer } from "../image-container";
-import { rgbToHex, rgbToHexWithAlpha } from "../utils";
+import { compress, OptimizedCodes } from '../compress';
+import { ImageContainer } from '../image-container';
+import { rgbToHex, rgbToHexWithAlpha } from '../utils';
 
 export const ImageAutoSize = -1;
 
 export interface MatrixGeneratorResult {
   matrix: string[][];
   uncompressedMatrix: string[][];
+  resizeScale: number;
 }
 
 export interface MatrixGeneratorOptions {
@@ -22,7 +23,12 @@ export class MatrixGenerator {
   private height: number;
   private withoutAlpha: boolean;
 
-  constructor({ image, width = 64, height = ImageAutoSize, withoutAlpha }: MatrixGeneratorOptions) {
+  constructor({
+    image,
+    width = 64,
+    height = ImageAutoSize,
+    withoutAlpha
+  }: MatrixGeneratorOptions) {
     this.image = image;
     this.width = width;
     this.height = height;
@@ -30,14 +36,16 @@ export class MatrixGenerator {
   }
 
   async generate(): Promise<MatrixGeneratorResult> {
+    const originalWidth = this.image.width;
     const resizedImage = await this.image.resize(this.width, this.height);
+    const resizeScale = resizedImage.width / originalWidth;
     const chunks = new Array(resizedImage.height)
       .fill(undefined)
       .map(() => new Array(resizedImage.width));
     const uncompressed = new Array(resizedImage.height)
       .fill(undefined)
       .map(() => new Array(resizedImage.width));
-  
+
     resizedImage.scan((x, y, rgba) => {
       const red = rgba[0];
       const green = rgba[1];
@@ -46,7 +54,7 @@ export class MatrixGenerator {
       const hasNoAlpha = this.withoutAlpha || alpha === 255;
       let hex;
       let compressed;
-  
+
       if (hasNoAlpha) {
         hex = rgbToHex(red, green, blue);
         if (hex === '#000000') hex = OptimizedCodes.Black;
@@ -57,14 +65,15 @@ export class MatrixGenerator {
         if (alpha === 0) hex = OptimizedCodes.Invisible;
         else compressed = compress(hex);
       }
-  
+
       uncompressed[y][x] = hex;
       chunks[y][x] = compressed || hex;
     });
 
     return {
       matrix: chunks,
-      uncompressedMatrix: uncompressed
+      uncompressedMatrix: uncompressed,
+      resizeScale
     };
   }
 }
