@@ -22,7 +22,7 @@ program
   })
   .action(function (filepath, width, height) {
     options.filepath = filepath;
-    options.width = parseMeasurement(width, 64);
+    options.width = parseMeasurement(width, 16);
     options.height = parseMeasurement(height);
   })
   .option('-o, --output-directory <outputDirectory>', 'output directory')

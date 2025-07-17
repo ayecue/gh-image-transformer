@@ -7,7 +7,6 @@ export const ImageAutoSize = -1;
 export interface MatrixGeneratorResult {
   matrix: string[][];
   uncompressedMatrix: string[][];
-  resizeScale: number;
 }
 
 export interface MatrixGeneratorOptions {
@@ -25,7 +24,7 @@ export class MatrixGenerator {
 
   constructor({
     image,
-    width = 64,
+    width = 16,
     height = ImageAutoSize,
     withoutAlpha
   }: MatrixGeneratorOptions) {
@@ -38,7 +37,6 @@ export class MatrixGenerator {
   async generate(): Promise<MatrixGeneratorResult> {
     const originalWidth = this.image.width;
     const resizedImage = await this.image.resize(this.width, this.height);
-    const resizeScale = resizedImage.width / originalWidth;
     const chunks = new Array(resizedImage.height)
       .fill(undefined)
       .map(() => new Array(resizedImage.width));
@@ -72,8 +70,7 @@ export class MatrixGenerator {
 
     return {
       matrix: chunks,
-      uncompressedMatrix: uncompressed,
-      resizeScale
+      uncompressedMatrix: uncompressed
     };
   }
 }

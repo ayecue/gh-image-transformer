@@ -71,7 +71,7 @@ Static images can be simply transformed into TextMesh Pro Rich-Text tags by usin
 gh-image-transformer path/to/image.png
 ```
 
-Optionally you can also select the width and height. By default, it will resize the image by a width of `64px`. If you want to resize the image by height just place a `-1` at the spot of the `width`.
+Optionally you can also select the width and height. By default, it will resize the image by a width of `16px`. If you want to resize the image by height just place a `-1` at the spot of the `width`.
 
 ~~Keep in mind that the images should be kept below 100px since Grey Hack has a limit of `160000` characters for each print line.~~ Please take a look [here](#important-info).
 

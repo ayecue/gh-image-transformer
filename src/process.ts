@@ -23,7 +23,7 @@ export async function process({
   image,
   width,
   height,
-  scale,
+  scale = 1,
   withoutAlpha = false
 }: ProcessOptions) {
   const matrixGenerator = new MatrixGenerator({
@@ -33,7 +33,7 @@ export async function process({
     withoutAlpha
   });
   const matrixResult = await matrixGenerator.generate();
-  const spriteGenerator = new SpriteGenerator(scale ?? matrixResult.resizeScale);
+  const spriteGenerator = new SpriteGenerator(scale);
   const { output, characters } = spriteGenerator.generate(matrixResult);
 
   if (frameIdx !== undefined) {
